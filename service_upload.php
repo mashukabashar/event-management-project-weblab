@@ -1,41 +1,32 @@
 <?php
 
-// Database connection details
-// IMPORTANT: Replace these with your actual database credentials
 $servername = "localhost";
-$username = "root"; // Your database username
-$password = ""; // Your database password
-$dbname = "Event-management"; // The name of your database
+$username = "root"; 
+$password = ""; 
+$dbname = "Event-management"; 
 
-// Check if the form has been submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
     $message_type = "";
 
-    // Create a new database connection
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Check the connection
     if ($conn->connect_error) {
         $message = "Connection failed: " . $conn->connect_error;
         $message_type = "error";
     } else {
-        // Get and sanitize form data
         $service_name = htmlspecialchars($_POST['service_name']);
         $description = htmlspecialchars($_POST['description']);
         $price = htmlspecialchars($_POST['price']);
         $category = htmlspecialchars($_POST['category']);
 
-        // Basic validation
         if (empty($service_name) || empty($description) || empty($price) || empty($category)) {
             $message = "Please fill in all required fields.";
             $message_type = "error";
         } else {
-            // Prepare an SQL statement to prevent SQL injection
             $stmt = $conn->prepare("INSERT INTO services (service_name, description, price, category) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssds", $service_name, $description, $price, $category); // 'ssds' indicates string, string, double, string
+            $stmt->bind_param("ssds", $service_name, $description, $price, $category); 
 
-            // Execute the statement and check for success
             if ($stmt->execute()) {
                 $message = "New service uploaded successfully!";
                 $message_type = "success";
@@ -44,11 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $message_type = "error";
             }
 
-            // Close the statement
             $stmt->close();
         }
 
-        // Close the database connection
         $conn->close();
     }
 }
@@ -167,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Use this page to add new services to your profile.</p>
 
     <?php
-    // Display the message box if a message exists
     if (!empty($message)) {
         echo "<div class='message-box {$message_type}'>{$message}</div>";
     }

@@ -7,24 +7,20 @@ $edit_id = '';
 $edit_name = '';
 $edit_contact = '';
 
-// ADD or UPDATE
 if (isset($_POST['add'])) {
     $name = $_POST['name'];
     $contact = $_POST['contact'];
 
     if (!empty($_POST['edit_id'])) {
-        // Update mode
         $edit_id = $_POST['edit_id'];
         $conn->query("UPDATE guests SET name='$name', contact='$contact' WHERE id=$edit_id");
     } else {
-        // Add new
         $conn->query("INSERT INTO guests (user_id, name, contact) VALUES (1, '$name', '$contact')");
     }
     header("Location: ".$_SERVER['PHP_SELF']);
     exit;
 }
 
-// DELETE
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $conn->query("DELETE FROM guests WHERE id = $id");
@@ -32,7 +28,6 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
-// EDIT — load data into form
 if (isset($_GET['edit'])) {
     $editing = true;
     $edit_id = $_GET['edit'];
@@ -41,7 +36,6 @@ if (isset($_GET['edit'])) {
     $edit_contact = $edit_data['contact'];
 }
 
-// FETCH
 $result = $conn->query("SELECT * FROM guests WHERE user_id = 1");
 ?>
 

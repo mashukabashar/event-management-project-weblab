@@ -1,5 +1,4 @@
 <?php
-// Database connection
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -16,11 +15,9 @@ $user_id = 1;
 $message = "";
 $message_type = "";
 
-// Handle vendor selection
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['vendor_id'])) {
     $vendor_id = $_POST['vendor_id'];
 
-    // Check if selected user is a vendor
     $check = $conn->prepare("SELECT role FROM users WHERE id = ?");
     $check->bind_param("i", $vendor_id);
     $check->execute();
@@ -29,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['vendor_id'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if ($row['role'] === 'vendor') {
-            // Insert into vendor_selections
             $stmt = $conn->prepare("INSERT INTO vendor_selections (user_id, vendor_id) VALUES (?, ?)");
             $stmt->bind_param("ii", $user_id, $vendor_id);
             if ($stmt->execute()) {
@@ -51,14 +47,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['vendor_id'])) {
     $check->close();
 }
 
-// Get all vendors
 $sql = "SELECT id, name FROM users WHERE role = 'vendor'";
 $result = $conn->query($sql);
 
 $vendors = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Dummy values for category/rating
         $row['category'] = 'General';
         $row['rating'] = '4.5';
         $vendors[] = $row;

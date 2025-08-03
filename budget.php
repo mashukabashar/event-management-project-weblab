@@ -13,7 +13,6 @@ if ($conn->connect_error) {
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['user_role'];
 
-// ADD Budget (only couples)
 if (isset($_POST['save'])) {
     if ($user_role === 'client') {
         $cat = $conn->real_escape_string($_POST['category']);
@@ -27,9 +26,8 @@ if (isset($_POST['save'])) {
     }
 }
 
-// DELETE Budget (only couples)
 if (isset($_GET['delete'])) {
-    if ($user_role === 'couple') {
+    if ($user_role === 'client') {
         $del_id = intval($_GET['delete']);
         $conn->query("DELETE FROM budget WHERE id = $del_id AND user_id = $user_id");
         header("Location: budget.php");
@@ -39,17 +37,13 @@ if (isset($_GET['delete'])) {
     }
 }
 
-// FETCH Budget Entries for logged-in user
 if ($user_role === 'admin') {
-    // Admin sees all budget entries
     $result = $conn->query("SELECT budget.*, users.name AS user_name FROM budget JOIN users ON budget.user_id = users.id ORDER BY date DESC");
 } else {
-    // Couples see only their own
     $result = $conn->query("SELECT * FROM budget WHERE user_id = $user_id ORDER BY date DESC");
 }
 
 
-// For EDIT, fetch record to populate form
 $edit_mode = false;
 if (isset($_GET['edit']) && $user_role === 'couple') {
     $edit_id = intval($_GET['edit']);
@@ -60,9 +54,8 @@ if (isset($_GET['edit']) && $user_role === 'couple') {
     }
 }
 
-// UPDATE Budget (only couples)
 if (isset($_POST['update'])) {
-    if ($user_role === 'couple') {
+    if ($user_role === 'client') {
         $upd_id = intval($_POST['id']);
         $cat = $conn->real_escape_string($_POST['category']);
         $amt = floatval($_POST['amount']);

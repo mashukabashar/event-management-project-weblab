@@ -9,18 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = $conn->real_escape_string($_POST['role']);
 
-    // Insert user
     $sql = "INSERT INTO users (name, email, password, role) VALUES ('$name', '$email', '$password', '$role')";
     if ($conn->query($sql) === TRUE) {
-        // Get inserted user id
         $user_id = $conn->insert_id;
 
-        // Set session variables
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_name'] = $name;
         $_SESSION['user_role'] = $role;
 
-        // Redirect based on role
         if ($role === 'admin') {
             header("Location: admin_dashboard.php");
         } elseif ($role === 'vendor') {
