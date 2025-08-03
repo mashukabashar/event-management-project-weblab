@@ -15,7 +15,7 @@ $user_role = $_SESSION['user_role'];
 
 // ADD Budget (only couples)
 if (isset($_POST['save'])) {
-    if ($user_role === 'couple') {
+    if ($user_role === 'client') {
         $cat = $conn->real_escape_string($_POST['category']);
         $amt = floatval($_POST['amount']);
         $date = $_POST['date'];
@@ -186,7 +186,7 @@ if (isset($_POST['update'])) {
     <div class="error"><?= htmlspecialchars($error) ?></div>
   <?php endif; ?>
 
-  <?php if ($user_role === 'couple'): ?>
+  <?php if ($user_role === 'client'): ?>
     <form method="POST">
       <input type="hidden" name="id" value="<?= $edit_mode ? $edit_row['id'] : '' ?>" />
       <input name="category" placeholder="Category" required value="<?= $edit_mode ? htmlspecialchars($edit_row['category']) : '' ?>" />
@@ -208,7 +208,7 @@ if (isset($_POST['update'])) {
       <th>Category</th>
       <th>Amount</th>
       <th>Date</th>
-      <?php if ($user_role === 'couple'): ?>
+      <?php if ($user_role === 'client'): ?>
         <th>Actions</th>
       <?php endif; ?>
     </tr>
@@ -217,7 +217,7 @@ if (isset($_POST['update'])) {
       <td><?= htmlspecialchars($row['category']) ?></td>
       <td>$<?= number_format($row['amount'], 2) ?></td>
       <td><?= htmlspecialchars($row['date']) ?></td>
-      <?php if ($user_role === 'couple'): ?>
+      <?php if ($user_role === 'client'): ?>
         <td class="actions">
           <a href="budget.php?edit=<?= $row['id'] ?>">Edit</a>
           <a href="budget.php?delete=<?= $row['id'] ?>" onclick="return confirm('Are you sure you want to delete this entry?');">Delete</a>

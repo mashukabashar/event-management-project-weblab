@@ -149,12 +149,33 @@ if (isset($_GET['logout'])) {
 <nav>
   <div class="logo-container">
     <img class="logo" src="image-mashuka/360_F_1112587129_wXvi0f4jnwVeZHlJiEZJ87QcdXv67GEf.jpg" alt="Eventify Logo" />
-    <h1 class="text1">EVENTIFY <?php echo ucfirst($role); ?></h1>
+    <h1 class="text1">EVENTIFY</h1>
   </div>
   <ul class="menu-container">
-    <li><a href="#">Dashboard</a></li>
-    <li><a href="budget.php">Budget Tracker</a></li>
-    <li><a href="guests.php">Guest List</a></li>
+    <?php if ($role === 'admin'): ?>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="budget.php">Budget Tracker</a></li>
+      <li><a href="guests.php">Guest List</a></li>
+      <li><a href="vendors.php">Vendors</a></li>
+      <li><a href="venue.php">Venue Details</a></li>
+      <li><a href="schedule.php">Schedule</a></li>
+      <li><a href="tasks.php">Task Manager</a></li>
+      <li><a href="messages.php">Messages</a></li>
+      <li><a href="reports.php">Reports</a></li>
+    <?php elseif ($role === 'vendor'): ?>
+      <li><a href="#">Vendor Dashboard</a></li>
+      <li><a href="assigned_events.php">Assigned Events</a></li>
+      <li><a href="service_upload.php">Upload Services</a></li>
+      <li><a href="messages.php">Messages</a></li>
+    <?php elseif ($role === 'client'): ?>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="budget.php">Budget Tracker</a></li>
+      <li><a href="guests.php">Guest List</a></li>
+      <li><a href="select_vendors.php">Select Vendors</a></li>
+      <li><a href="schedule.php">Schedule</a></li>
+      <li><a href="checklist.php">Checklist</a></li>
+      <li><a href="messages.php">Messages</a></li>
+    <?php endif; ?>
     <li><a href="?logout=1">Logout</a></li>
   </ul>
 </nav>
@@ -164,6 +185,20 @@ if (isset($_GET['logout'])) {
     <?php echo "Welcome, <span style='color:#aadd77'>" . htmlspecialchars($name) . "</span><br>Your Event Partner Awaits"; ?>
   </div>
 </section>
+
+<main>
+  <?php if ($role === 'admin'): ?>
+    <h2>Welcome Admin!</h2>
+    <p>You're in control of the entire platform. Manage users, vendors, events, and ensure everything is running smoothly.</p>
+  <?php elseif ($role === 'vendor'): ?>
+    <h2>Welcome Vendor!</h2>
+    <p>Access your assigned events, upload your service offerings, and communicate with couples or admins directly.</p>
+  <?php elseif ($role === 'client'): ?>
+    <h2>Welcome to EVENTIFY!</h2>
+    <p>Plan your special day with ease. Use the tools above to manage your budget, guest list, vendor selections, timeline, and more.</p>
+    <p>Be sure to check off your checklist items and stay connected with your vendors and event manager.</p>
+  <?php endif; ?>
+</main>
 
 </body>
 </html>
