@@ -11,7 +11,6 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Dummy logged-in user (replace with $_SESSION['user_id'] in real app)
 $user_id = 1;
 
 $message = "";
